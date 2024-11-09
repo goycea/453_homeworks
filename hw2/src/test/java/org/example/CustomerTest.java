@@ -1,7 +1,8 @@
-import org.example.Customer;
-import org.junit.jupiter.api.Test;
+package org.example;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.testng.annotations.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerTest {
 
