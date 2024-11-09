@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="shoppinPitTes" type="PIT" factoryName="PIT Runner" singleton="false" REPORT_DIR="$PROJECT_DIR$/target/report" SOURCE_DIRS="$PROJECT_DIR$/src/main/java" TARGET_CLASSES="org.example.*" TARGET_TESTS="" otherParams="--outputFormats XML,HTML --reportDir target/pit-reports \   --sourceDirs src/main/java,src/test/java \   --targetClasses org.example.* \   --mutators DEFAULTS \   --verbose true">
+    <module name="hw2" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -14,4 +14,54 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- PIT JUnit 5 Plugin -->
+        <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.2.1</version> <!-- Check for the latest version -->
+        </dependency>
+        <!-- PIT TestNG Plugin -->
+        <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-testng-plugin</artifactId>
+            <version>1.0.0</version> <!-- Check for the latest version -->
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.17.1</version>
+                <configuration>
+                    <targetClasses>org.example.*</targetClasses>
+                    <targetTests>org.example.*Test</targetTests>
+                    <verbose>true</verbose> <!-- Enable verbose logging -->
+                    <features>
+                        <feature>+EXPORT</feature>
+                    </features>
+                    <outputFormats>
+                        <param>XML</param>
+                        <param>HTML</param>
+                    </outputFormats>
+                    <mutators>
+                        <mutator>DEFAULTS</mutator> <!-- Specify the mutators to use -->
+                    </mutators>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
