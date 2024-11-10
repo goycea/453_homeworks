@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BasisPathTests {
+public class BasisPathTests {//for removeProduct method
 
     private ShoppingCart cart;
     private ProductModel product1;
