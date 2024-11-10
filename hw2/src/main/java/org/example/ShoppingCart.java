@@ -48,16 +48,19 @@ public class ShoppingCart {
             System.out.println("Invalid quantity");
             MyTimer.waitSecond(2);
             return 0;
-        } else {
-
+        }
+        else{
             products[productIndex].setQuantity(products[productIndex].getQuantity() - quantity);
             totalCost -= products[productIndex].getPrice() * quantity;
+            System.out.println("Product quantity reduced!");
+
             // if user remove all quantity of the product, remove the product from the cart
             if (products[productIndex].getQuantity() == 0) {
                 for (int i = productIndex; i < totalProducts - 1; i++) {
                     products[i] = products[i + 1];
                 }
                 totalProducts--;
+                System.out.println("Product removed successfully");
             }
             return quantity;
         }
