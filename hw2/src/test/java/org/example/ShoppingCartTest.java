@@ -113,7 +113,6 @@ class ShoppingCartTest {
     }
 
     // Mutation Testings
-
     @Test
     void addProductMutation() {
         cart.addProduct(product1, 1);
@@ -134,21 +133,84 @@ class ShoppingCartTest {
 
     @Test
     void removeProductMutation() {
-        cart.addProduct(product1, 3);
-        cart.addProduct(product2, 2);
+        cart.addProduct(product1, 4);
+        cart.addProduct(product2, 3);
 
-        int removedQuantity = cart.removeProduct(product1, 1);
-        assertEquals(1, removedQuantity);
+        int removedQuantity = cart.removeProduct(product1, 2);
+        assertEquals(2, removedQuantity);
         assertEquals(2, cart.getProducts()[0].getQuantity());
-        assertEquals(6, cart.getTotalCost());
+        assertEquals(8, cart.getTotalCost());
 
         removedQuantity = cart.removeProduct(product1, 2);
         assertEquals(2, removedQuantity);
         assertEquals(1, cart.getTotalProducts());
-        assertEquals(4, cart.getTotalCost());
+        assertEquals(6, cart.getTotalCost());
 
-        removedQuantity = cart.removeProduct(product2, 2);
+        removedQuantity = cart.removeProduct(product2, 3);
+        assertEquals(3, removedQuantity);
+        assertEquals(0, cart.getTotalProducts());
+        assertEquals(0, cart.getTotalCost());
+    }
+
+    @Test
+    void removeProductMutation2() {
+        cart.addProduct(product1, 5);
+        cart.addProduct(product2, 4);
+
+        int removedQuantity = cart.removeProduct(product1, 3);
+        assertEquals(3, removedQuantity);
+        assertEquals(2, cart.getProducts()[0].getQuantity());
+        assertEquals(10, cart.getTotalCost());
+
+        removedQuantity = cart.removeProduct(product1, 2);
         assertEquals(2, removedQuantity);
+        assertEquals(1, cart.getTotalProducts());
+        assertEquals(8, cart.getTotalCost());
+
+        removedQuantity = cart.removeProduct(product2, 4);
+        assertEquals(4, removedQuantity);
+        assertEquals(0, cart.getTotalProducts());
+        assertEquals(0, cart.getTotalCost());
+    }
+
+    @Test
+    void removeProductMutation3() {
+        cart.addProduct(product1, 6);
+        cart.addProduct(product2, 5);
+
+        int removedQuantity = cart.removeProduct(product1, 4);
+        assertEquals(4, removedQuantity);
+        assertEquals(2, cart.getProducts()[0].getQuantity());
+        assertEquals(12, cart.getTotalCost());
+
+        removedQuantity = cart.removeProduct(product1, 2);
+        assertEquals(2, removedQuantity);
+        assertEquals(1, cart.getTotalProducts());
+        assertEquals(10, cart.getTotalCost());
+
+        removedQuantity = cart.removeProduct(product2, 5);
+        assertEquals(5, removedQuantity);
+        assertEquals(0, cart.getTotalProducts());
+        assertEquals(0, cart.getTotalCost());
+    }
+
+    @Test
+    void removeProductMutation4() {
+        cart.addProduct(product1, 7);
+        cart.addProduct(product2, 6);
+
+        int removedQuantity = cart.removeProduct(product1, 5);
+        assertEquals(5, removedQuantity);
+        assertEquals(2, cart.getProducts()[0].getQuantity());
+        assertEquals(14, cart.getTotalCost());
+
+        removedQuantity = cart.removeProduct(product1, 2);
+        assertEquals(2, removedQuantity);
+        assertEquals(1, cart.getTotalProducts());
+        assertEquals(12, cart.getTotalCost());
+
+        removedQuantity = cart.removeProduct(product2, 6);
+        assertEquals(6, removedQuantity);
         assertEquals(0, cart.getTotalProducts());
         assertEquals(0, cart.getTotalCost());
     }

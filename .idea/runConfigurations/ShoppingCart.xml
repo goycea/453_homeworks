@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ShoppingCart" type="PIT" factoryName="PIT Runner" REPORT_DIR="$PROJECT_DIR$/report" SOURCE_DIRS="$PROJECT_DIR$/hw1/src/test/java" TARGET_CLASSES="org.example.*" TARGET_TESTS="" otherParams="--outputFormats XML,HTML">
+    <module name="homeworks" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
