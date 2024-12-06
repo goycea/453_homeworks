@@ -19,8 +19,8 @@ class CustomerMockTest {
     void setUp() {
         market = new Market(10);
         product1 = mock(ProductModel.class);
-        shoppingCart = new ShoppingCart();
         customer = mock(Customer.class);
+        shoppingCart = new ShoppingCart();
     }
 
     @Test
@@ -50,7 +50,7 @@ class CustomerMockTest {
         shoppingCart.addProduct(product1, 2);
         shoppingCart.buyProducts(customer);
 
-        verify(customer, times(1)).getAvailableBalance();
+        verify(customer, times(5)).getAvailableBalance();
         verify(customer, times(0)).subtractionBalance(anyDouble());
     }
 

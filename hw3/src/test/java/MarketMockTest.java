@@ -11,15 +11,12 @@ class MarketMockTest {
 
     private Market market;
     private ProductModel product1;
-    private ProductModel product2;
-    private Customer customer;
+
 
     @BeforeEach
     void setUp() {
         market = new Market(10);
         product1 = mock(ProductModel.class);
-        product2 = mock(ProductModel.class);
-        customer = mock(Customer.class);
     }
 
     @Test
