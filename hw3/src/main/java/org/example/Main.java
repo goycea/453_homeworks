@@ -116,7 +116,7 @@ public class Main {
         }
     }
 
-    private static void addProductToCart(int productIndex) {
+    public static void addProductToCart(int productIndex) {
         System.out.println("Enter quantity to add");
         int quantity = getValidatedIntegerInput();
         ProductModel product = market.getProduct(productIndex);
