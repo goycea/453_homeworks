@@ -6,22 +6,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.example.Main.addProductToCart;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class IntegrationTest {
 
-    private Customer mockCustomer;
-    private ShoppingCart mockCart;
-    private Market mockMarket;
+    private ProductModel product1;
+    private ProductModel product2;
+    private Customer customer;
+    private ShoppingCart cart;
+    private Market market;
 
     @BeforeEach
     void setUp() {
-        mockCustomer = Mockito.mock(Customer.class);
-        mockCart = Mockito.mock(ShoppingCart.class);
-        mockMarket = Mockito.mock(Market.class);
+        customer = Mockito.mock(Customer.class);
+        cart = Mockito.mock(ShoppingCart.class);
+        market = Mockito.mock(Market.class);
+        product1 = mock(ProductModel.class);
+        product2 = mock(ProductModel.class);
     }
 
+    //******************ShoppingCart Mock tests***********
     @Test
     public void testAddProductToCart() {
 
@@ -53,32 +58,59 @@ class IntegrationTest {
 
         // Mock behaviors
         ProductModel mockProduct = new ProductModel("Banana", 3, 5, "kg");
-        when(mockCart.getProducts()).thenReturn(new ProductModel[]{mockProduct});
-        when(mockCart.removeProduct(mockProduct, 2)).thenReturn(2);
-        doNothing().when(mockMarket).restockProduct(0, 2);
+        when(cart.getProducts()).thenReturn(new ProductModel[]{mockProduct});
+        when(cart.removeProduct(mockProduct, 2)).thenReturn(2);
+        doNothing().when(market).restockProduct(0, 2);
 
         // Simulate the operation
-        mockCart.removeProduct(mockProduct, 2);
-        mockMarket.restockProduct(0, 2);
+        cart.removeProduct(mockProduct, 2);
+        market.restockProduct(0, 2);
 
         // Verify interactions
-        verify(mockCart, times(1)).removeProduct(mockProduct, 2);
-        verify(mockMarket, times(1)).restockProduct(0, 2);
+        verify(cart, times(1)).removeProduct(mockProduct, 2);
+        verify(market, times(1)).restockProduct(0, 2);
 
         System.out.println("Product removed from cart and market stock updated.");
     }
 
     @Test
+    void testBuyProducts() {
+        cart = new ShoppingCart();
+        product1 = new ProductModel("Apple", 1, 1, "kg");
+        product2 = new ProductModel("Banana", 2, 2, "kg");
+
+        when(customer.getAvailableBalance()).thenReturn(10.0);
+
+        cart.addProduct(product1, 1);
+        cart.buyProducts(customer);
+
+        verify(customer, times(1)).getAvailableBalance();
+        verify(customer, times(1)).subtractionBalance(1);
+        assertEquals(0, cart.getTotalProducts()); // Cart should be empty after purchase
+    }
+
+    @Test
+    void testClearCart() {
+        cart.addProduct(product1, 1);
+        cart.clearCart();
+
+        assertEquals(0, cart.getTotalProducts());
+        assertEquals(0, cart.getTotalCost());
+    }
+
+    //******************** Customer Mock Tests *********************
+
+    @Test
     void testCustomerBalanceUpdate() {
         // Mock behaviors
-        when(mockCustomer.getAvailableBalance()).thenReturn(50.0);
-        doNothing().when(mockCustomer).subtractionBalance(20.0);
+        when(customer.getAvailableBalance()).thenReturn(50.0);
+        doNothing().when(customer).subtractionBalance(20.0);
 
         // Simulate the operation
-        mockCustomer.subtractionBalance(20.0);
+        customer.subtractionBalance(20.0);
 
         // Verify interactions
-        verify(mockCustomer, times(1)).subtractionBalance(20.0);
+        verify(customer, times(1)).subtractionBalance(20.0);
 
         System.out.println("Customer balance updated.");
     }
@@ -87,26 +119,28 @@ class IntegrationTest {
     void testCheckout() {
         // Mock behaviors
         ProductModel mockProduct = new ProductModel("Milk", 10, 2, "liter");
-        when(mockCart.getProducts()).thenReturn(new ProductModel[]{mockProduct});
-        when(mockCart.getTotalCost()).thenReturn(20);
-        when(mockCustomer.getAvailableBalance()).thenReturn(50.0);
+        when(cart.getProducts()).thenReturn(new ProductModel[]{mockProduct});
+        when(cart.getTotalCost()).thenReturn(20);
+        when(customer.getAvailableBalance()).thenReturn(50.0);
 
         // Simulate checkout
-        if (mockCustomer.getAvailableBalance() >= mockCart.getTotalCost()) {
-            mockCart.buyProducts(mockCustomer);
+        if (customer.getAvailableBalance() >= cart.getTotalCost()) {
+            cart.buyProducts(customer);
         }
 
         // Verify interactions
-        verify(mockCart, times(1)).buyProducts(mockCustomer);
+        verify(cart, times(1)).buyProducts(customer);
 
     }
+
+    //******************** Market Mock Tests *********************
 
     @Test
     void testInvalidQuantityHandling() {
 
         // Mock behaviors
         ProductModel mockProduct = new ProductModel("Juice", 5, 0, "liter");
-        when(mockMarket.getProduct(0)).thenReturn(mockProduct);
+        when(market.getProduct(0)).thenReturn(mockProduct);
 
         // Simulate the operation
         int invalidQuantity = 10; // greater than available
@@ -115,8 +149,40 @@ class IntegrationTest {
         }
 
         // Verify no interaction on invalid input
-        verify(mockCart, never()).addProduct(mockProduct, invalidQuantity);
+        verify(cart, never()).addProduct(mockProduct, invalidQuantity);
 
         System.out.println("No product added to cart due to invalid quantity.");
     }
+
+    @Test
+    void testRestockProduct() {
+
+        market = new Market(10);
+
+        when(product1.getName()).thenReturn("Apple");
+        when(product1.getPrice()).thenReturn(5);
+        when(product1.getQuantity()).thenReturn(10);
+        when(product1.getUnit()).thenReturn("kg");
+
+        market.addProduct(product1);
+        market.restockProduct(0, 10);
+
+        // Verify quantity was updated
+        verify(product1, times(1)).setQuantity(20); // assuming you have setQuantity implemented in ProductModel
+    }
+
+    @Test
+    void testFindProductIndex() {
+        when(product1.getName()).thenReturn("Apple");
+        when(product1.getPrice()).thenReturn(5);
+        when(product1.getQuantity()).thenReturn(10);
+        when(product1.getUnit()).thenReturn("kg");
+
+        market.addProduct(product1);
+        int index = market.findProductIndex(product1);
+
+        assertEquals(0, index);
+    }
+
+
 }
