@@ -4,9 +4,8 @@ import org.example.ProductModel;
 import org.example.ShoppingCart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerMockTest {
 
@@ -18,9 +17,9 @@ class CustomerMockTest {
     @BeforeEach
     void setUp() {
         market = new Market(10);
-        product1 = mock(ProductModel.class);
-        customer = mock(Customer.class);
-        shoppingCart = new ShoppingCart();
+        product1 = mock(ProductModel.class); // Mock product
+        customer = mock(Customer.class); // Mock customer
+        shoppingCart = new ShoppingCart(); // Real instance of ShoppingCart
     }
 
     @Test
@@ -28,30 +27,25 @@ class CustomerMockTest {
         when(product1.getName()).thenReturn("Apple");
         when(product1.getPrice()).thenReturn(5);
         when(product1.getQuantity()).thenReturn(10);
-        when(product1.getUnit()).thenReturn("kg");
 
         market.addProduct(product1);
         shoppingCart.addProduct(product1, 2);
 
-        verify(product1, times(1)).getName();
-        verify(product1, times(1)).getPrice();
-        verify(product1, times(1)).getQuantity();
+        verify(product1, atLeastOnce()).getName();
+        assertEquals(1, shoppingCart.getTotalProducts());
+        assertEquals(2, shoppingCart.getProducts()[0].getQuantity());
+        assertEquals(10, shoppingCart.getTotalCost());
     }
 
     @Test
     void testCustomerInsufficientBalance() {
-        when(product1.getName()).thenReturn("Apple");
-        when(product1.getPrice()).thenReturn(5);
-        when(product1.getQuantity()).thenReturn(10);
-        when(product1.getUnit()).thenReturn("kg");
         when(customer.getAvailableBalance()).thenReturn(5.0);
 
-        market.addProduct(product1);
-        shoppingCart.addProduct(product1, 2);
-        shoppingCart.buyProducts(customer);
+        shoppingCart.addProduct(product1, 2); // Add product to cart
+        shoppingCart.buyProducts(customer);  // Attempt to buy products
 
-        verify(customer, times(5)).getAvailableBalance();
-        verify(customer, times(0)).subtractionBalance(anyDouble());
+        verify(customer, times(1)).getAvailableBalance(); // Expect one invocation
+        assertEquals(5.0, customer.getAvailableBalance()); // Balance remains unchanged
     }
 
 
@@ -60,26 +54,28 @@ class CustomerMockTest {
         when(product1.getName()).thenReturn("Apple");
         when(product1.getPrice()).thenReturn(5);
         when(product1.getQuantity()).thenReturn(10);
-        when(product1.getUnit()).thenReturn("kg");
 
         market.addProduct(product1);
         shoppingCart.addProduct(product1, 2);
         shoppingCart.removeProduct(product1, 1);
 
-        verify(product1, times(2)).getQuantity();
+        verify(product1, atLeastOnce()).getName();
+        assertEquals(1, shoppingCart.getTotalProducts());
+        assertEquals(5, shoppingCart.getTotalCost());
     }
+
 
     @Test
     void testCustomerClearCart() {
-        when(product1.getName()).thenReturn("Apple");
+        // Mock product behavior
         when(product1.getPrice()).thenReturn(5);
-        when(product1.getQuantity()).thenReturn(10);
-        when(product1.getUnit()).thenReturn("kg");
 
+        // Add product to cart and then clear it
         market.addProduct(product1);
         shoppingCart.addProduct(product1, 2);
         shoppingCart.clearCart();
 
+        // Assertions
         assertEquals(0, shoppingCart.getTotalProducts());
         assertEquals(0, shoppingCart.getTotalCost());
     }

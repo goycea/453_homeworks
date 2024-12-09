@@ -3,7 +3,6 @@ import org.example.Market;
 import org.example.ProductModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -11,7 +10,6 @@ class MarketMockTest {
 
     private Market market;
     private ProductModel product1;
-
 
     @BeforeEach
     void setUp() {
@@ -28,9 +26,11 @@ class MarketMockTest {
 
         market.addProduct(product1);
 
-        verify(product1, times(1)).getName();
-        verify(product1, times(1)).getPrice();
-        verify(product1, times(1)).getQuantity();
+        // Verify product is added correctly by checking product count
+        assertEquals(1, market.getProductCount());
+
+        // Optionally, check if the product is indeed added to the array
+        assertEquals(product1, market.getProduct(0));
     }
 
     @Test
@@ -43,7 +43,8 @@ class MarketMockTest {
         market.addProduct(product1);
         market.restockProduct(0, 10);
 
-        verify(product1, times(2)).getQuantity();
+        // Verify quantity was updated
+        verify(product1, times(1)).setQuantity(20); // assuming you have setQuantity implemented in ProductModel
     }
 
     @Test
@@ -57,7 +58,5 @@ class MarketMockTest {
         int index = market.findProductIndex(product1);
 
         assertEquals(0, index);
-        verify(product1, times(1)).getName();
     }
-
 }
