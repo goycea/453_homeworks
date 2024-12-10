@@ -2,7 +2,7 @@ package org.example;
 
 public class Customer {
     private final String name;
-    private double availableBalance;
+    private double availableBalance=0;
 
     public Customer(String name,double availableBalance) {
         this.name = name;

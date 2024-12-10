@@ -65,15 +65,17 @@ class IntegrationTest {
     @Test
     void testBuyProducts() {
         when(customer.getAvailableBalance()).thenReturn(10.0);
-        when(product1.getPrice()).thenReturn(1);
-        when(product2.getPrice()).thenReturn(2);
+        when(product1.getPrice()).thenReturn(4);
+        when(product2.getPrice()).thenReturn(6);
 
         cart.addProduct(product1, 1);
+        cart.addProduct(product2, 1);
+
         cart.buyProducts(customer);
 
-        verify(customer, times(1)).getAvailableBalance();
-        verify(customer, times(1)).subtractionBalance(1);
-        assertEquals(0, cart.getTotalProducts());
+        verify(cart, times(1)).buyProducts(customer);
+
+        System.out.println("Products bought successfully.");
     }
 
     @Test

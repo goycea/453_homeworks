@@ -92,7 +92,7 @@ public class ShoppingCart {
     }
 
     public void buyProducts(Customer customer) {
-        double balance = customer.getAvailableBalance(); // Single call
+        double balance = customer.getAvailableBalance(); // Must be called here
         if (balance >= totalCost) {
             System.out.println("Thank you for your purchase! Here is the summary:");
             printCart();
@@ -102,6 +102,7 @@ public class ShoppingCart {
             System.out.println("Insufficient balance. Your available balance: " + balance + ", Total cost: " + totalCost);
         }
     }
+
 
 
 
