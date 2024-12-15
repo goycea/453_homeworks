@@ -162,4 +162,30 @@ class IntegrationTest {
 
         assertEquals(0, index);
     }
+
+    @Test
+    void testEndToEndCartFlow() {
+        Market realMarket = new Market(10);
+        ShoppingCart realCart = new ShoppingCart();
+        Customer realCustomer = new Customer("John", 50.0);
+
+        ProductModel product = new ProductModel("Apple", 5, 10, "kg");
+        realMarket.addProduct(product);
+
+        // Add product to cart
+        ProductModel selectedProduct = realMarket.getProduct(0);
+        realCart.addProduct(selectedProduct, 2);
+        realMarket.restockProduct(0, -2);
+
+        // Checkout
+        if (realCustomer.getAvailableBalance() >= realCart.getTotalCost()) {
+            realCart.buyProducts(realCustomer);
+        }
+
+        // Assertions
+        assertEquals(8, selectedProduct.getQuantity()); // Stock should be reduced
+        assertEquals(0, realCart.getTotalCost()); // Cart total should match
+        assertEquals(40.0, realCustomer.getAvailableBalance()); // Balance should decrease
+    }
+
 }
