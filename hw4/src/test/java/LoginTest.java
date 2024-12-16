@@ -25,7 +25,7 @@ public class LoginTest {
 
     @BeforeClass
     public void setup() {
-        System.setProperty("webdriver.chrome.driver", "C:/Users/alper/OneDrive/Masaüstü/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver();
     }
 
